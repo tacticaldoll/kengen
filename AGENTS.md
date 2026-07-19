@@ -1,71 +1,77 @@
 # AGENTS.md
 
-Meta-guideline for any AI coding agent working in this repository. Read this
-first.
+Meta-guideline for any agent working in this repository. Read this first, then
+`PROJECT.md`.
+
+## What kengen is (and how it is governed)
+
+Kengen is a **sans-I/O family brick** — an access-policy adjudicator (see `PROJECT.md`). It is
+governed as a sans-I/O core: its teeth are the **purity boundary** (no I/O in the core) and the
+**mechanism-not-content** discipline (Kengen combines verdicts; it never owns policy content or
+enforcement). It shares the family *discipline* — sans-I/O, OpenSpec, vocabulary-as-governance,
+non-goals-as-teeth, least-commitment — with no shared code and its own release cadence.
+
+## Lineage
+
+```
+   tianheng  +  [ sans-I/O · OpenSpec · vocabulary-as-governance · least-commitment ]
+                     |  (inherited discipline — provenance)
+                     v
+               *  kengen
+   siblings: [ ] [ ] [ ]   <- intentionally blank (sibling-blind); composition lives in consumers
+   note: skeleton copied from the pacta reference implementation
+```
+
+The parent is **the discipline**, not any one product. Sibling products are deliberately left
+blank: this repo is blind to what else exists and what composes it — that knowledge lives in the
+(private) consumers, never in a brick.
 
 ## This Project Uses OpenSpec
 
-The source of truth lives in `openspec/`, which is version-controlled and
-agent-agnostic.
+Source of truth lives in `openspec/`:
 
-- `openspec/specs/` - the living specification of what the system currently is.
-- `openspec/changes/` - active change proposals as delta specs.
-- `openspec/changes/archive/` - completed changes.
+- `openspec/specs/` — the living specification of what the system currently is.
+- `openspec/changes/` — active change proposals as delta specs.
 
-Per-agent command files such as `.codex/`, `.claude/`, and editor-specific shims
-are per-clone generated files and are not committed. After cloning, generate
-your own with:
-
-```bash
-openspec init --tools codex
-# or: openspec init --tools claude,cursor,github-copilot
-```
+Per-agent command files (`.codex/`, `.claude/`, …) are per-clone generated and not committed.
+Generate your own after cloning: `openspec init --tools <tool>`.
 
 ## Workflow
 
-Follow this lifecycle:
-
 ```text
-explore -> propose -> apply -> sync -> archive
+explore -> propose -> apply -> sync
 ```
 
-1. **Explore**: think and investigate only. Do not write feature code outside of
-   a change.
-2. **Propose**: create a change with `proposal.md`, `design.md`, `tasks.md`, and
-   delta specs.
-3. **Apply**: implement tasks one at a time, checking each off in `tasks.md`
-   only after verification.
-4. **Sync**: merge verified delta specs back into `openspec/specs/`.
-5. **Archive**: move the completed change to
-   `openspec/changes/archive/YYYY-MM-DD-<name>/`.
+1. **Explore**: think and investigate only. No feature code outside a change.
+2. **Propose**: create `proposal.md`, `design.md`, `tasks.md`, and delta specs.
+3. **Apply**: implement tasks one at a time, checking each off only after verification.
+4. **Sync**: merge verified delta specs into `openspec/specs/`, then remove the completed change
+   directory. There is **no `openspec/changes/archive/` folder** — archive means deletion; git
+   history keeps the deliberation. Do not run `openspec archive`.
 
-## OpenSpec CLI
+## Adversarial review gate
 
-If your agent has no OpenSpec slash commands, use the CLI:
-
-```bash
-openspec list [--json] [--specs]
-openspec new change "<name>"
-openspec status --change "<name>" --json
-openspec instructions <artifact> --change "<name>"
-openspec archive <name>
-```
+Every change passes an adversarial self-review at **both** the propose and apply phases before
+committing. At minimum: does it introduce I/O into the core (clock, filesystem, network, global
+state)? does it start owning **policy content** or rule evaluation instead of only combining
+supplied verdicts? does it act on a verdict (enforce) rather than return it? does any combination
+silently downgrade a `Deny`/`Ask`?
 
 ## Rules
 
-- Before implementing anything, read the relevant files in `openspec/specs/` and
-  the active change's artifacts.
-- Do not write feature code without an active change proposal that contains
-  tasks.
-- Keep changes minimal and scoped to the task being implemented.
-- Treat `openspec/specs/` as the truth. Reflect requirement changes there via
-  the sync step, not by editing code silently.
-- Keep project-specific contract, terms, and priorities in `PROJECT.md`.
+- Read the relevant `openspec/specs/` and the active change's artifacts before implementing.
+- No feature code without an active change that contains tasks.
+- Keep changes minimal and scoped. Never bundle unrelated changes.
+- Treat `openspec/specs/` as truth; reflect requirement changes there via sync, not silent code
+  edits.
+- **Sans-I/O, mechanism-not-content.** The core stays a pure function of its inputs. If a change
+  grows I/O, policy-content ownership, rule evaluation, or enforcement, stop — that is the monolith
+  returning.
 
 ## Language
 
-- Write OpenSpec artifacts, ADRs, code comments, and commit messages in English.
-- Converse with users in the language they use.
+Write OpenSpec artifacts, code comments, and commit messages in English; converse with users in
+their language.
 
 ## Commit And Integration Governance
 
@@ -109,18 +115,16 @@ openspec archive <name>
 
 ## Definition Of Done
 
-Run these from the workspace root before checking off a task, syncing specs, or
-archiving a change:
+Run from the workspace root before checking off a task or syncing.
 
 ```bash
-cargo build
-cargo test
-cargo clippy --all-targets -- -D warnings
+cargo build --workspace
+cargo test --workspace
+cargo clippy --workspace --all-targets -- -D warnings
 cargo fmt --all --check
+RUSTDOCFLAGS="-D warnings" cargo doc --workspace --no-deps
+cargo deny check
+./scripts/naming-guard.sh   # naming-worldview guard — see docs/naming.md
 ```
-
-Before the first real crate exists, these Rust commands are not yet meaningful.
-The first project-specific OpenSpec change should add the real crate layout and
-make the Definition of Done runnable from the workspace root.
 
 If a command cannot run in the current environment, report that explicitly.
