@@ -32,9 +32,12 @@ assert_eq!(decision, Verdict::Ask); // Ask escalates over Allow; nothing downgra
 - `docs/naming.md` — the naming worldview and its guard.
 - `openspec/specs/` — shipped requirements.
 
-## Status (0.1.0, in development)
+## Scope
 
-Project shape only: the sans-I/O core exists; behaviour is built bet-first — see `BACKLOG.md`.
+Kengen owns the verdict-lattice combination mechanism and nothing else (see "What Kengen owns"
+above). It is built **bet-first**: behaviour grows only as a consumer forces it, so the surface
+stays deliberately minimal. The plan and deferrals live in `BACKLOG.md`; `CHANGELOG.md` records what
+each release adds.
 
 ## License
 

@@ -50,3 +50,14 @@ products it is composed with is the consumer's knowledge, not Kengen's.
   (between `Allow` and `Deny`); who is asked is the consumer's.
 - **Explanation shape**: attach provenance to the `Verdict` vs. return a separate structure.
   Deferred to the phase-1 consumer that forces it.
+
+## Deferred decisions
+
+- **Executable governance as a `kengen-governance` crate**: the family ships architecture as an
+  executable Tianheng/guibiao `*-governance` crate (see `suunta-governance`, `shaahid-governance`).
+  Kengen currently enforces its one architectural axiom — the naming worldview — through
+  `scripts/naming-guard.sh` (run in the Definition of Done and in CI). Promoting that to a
+  `kengen-governance` crate that reacts against the source (dependency-isolation, sans-I/O purity,
+  no exposed `async fn`, active-prose boundaries) is **deferred** until the behaviour built
+  bet-first gives it invariants worth reacting against; the naming guard is sufficient for the
+  project-shape phase.
