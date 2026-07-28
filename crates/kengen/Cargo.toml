@@ -3,6 +3,7 @@ name = "kengen"
 description = "Sans-I/O access-policy adjudication: combine per-rule verdicts into one Allow / Ask / Deny decision."
 version.workspace = true
 edition.workspace = true
+rust-version.workspace = true
 license.workspace = true
 repository.workspace = true
 
