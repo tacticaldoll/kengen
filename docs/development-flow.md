@@ -1,7 +1,7 @@
 # Development Flow
 
-This project uses OpenSpec for spec-driven development. `AGENTS.md` is the
-authoritative contributor and agent guide; this file is a short checklist.
+This project uses OpenSpec for spec-driven development. `AGENTS.md` is the authoritative
+contributor and agent guide; this file is a short checklist.
 
 ## One Change
 
@@ -19,16 +19,15 @@ authoritative contributor and agent guide; this file is a short checklist.
    - commit coherent compiling milestones as `feat(...)` or `fix(...)`
 4. Sync verified semantics:
    - promote verified delta specs into `openspec/specs/`
+   - **delete** the completed change directory (archive = deletion; there is no archive folder,
+     and `openspec archive` is not used — git history keeps the deliberation)
    - commit as `docs(specs): sync <change-name>`
-5. Archive the completed change:
-   - `openspec archive <change-name>`
-   - commit as `chore(openspec): archive <change-name>`
 
 ## Commit Granularity
 
-Apply commits should be larger than individual task checkboxes and smaller than
-an entire risky feature. Prefer one commit per coherent milestone that builds,
-tests, and preserves the spec contract.
+Apply commits should be larger than individual task checkboxes and smaller than an entire risky
+feature. Prefer one commit per coherent milestone that builds, tests, and preserves the spec
+contract.
 
 Avoid:
 
@@ -38,11 +37,5 @@ Avoid:
 
 ## Definition Of Done
 
-Run these from the workspace root:
-
-```bash
-cargo build
-cargo test
-cargo clippy --all-targets -- -D warnings
-cargo fmt --all --check
-```
+See `AGENTS.md` for the authoritative gate list (build, test, clippy, fmt, doc, deny,
+naming-guard), run from the workspace root.

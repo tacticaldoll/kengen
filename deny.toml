@@ -1,0 +1,20 @@
+# cargo-deny owns resolved supply-chain policy for the workspace.
+# Run: `cargo deny check`.
+#
+# Kengen's core is sans-I/O and dependency-free by design; this policy keeps it that way.
+
+[advisories]
+version = 2
+ignore = []
+
+[licenses]
+version = 2
+allow = ["MIT", "Apache-2.0", "Unicode-3.0", "BSD-3-Clause"]
+confidence-threshold = 0.9
+
+[bans]
+multiple-versions = "warn"
+
+[sources]
+unknown-registry = "deny"
+unknown-git = "deny"

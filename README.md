@@ -1,45 +1,40 @@
-# rust-openspec-starter
+# Kengen
 
-An opinionated starter for Rust projects that use OpenSpec, ADRs, conventional
-commits, and AI-agent-friendly governance from day one.
+Kengen (権限) is a **sans-I/O access-policy adjudicator**. Given the verdicts a set of policy rules
+have reached about a request, it returns the single decision — **Allow**, **Ask** (an authority
+must confirm), or **Deny** — by folding them over the verdict lattice (`Allow < Ask < Deny`, most
+restrictive wins).
 
-This repository is intentionally small. It provides the process skeleton for a
-new project, not product-specific architecture.
+It owns the *combination mechanism* and nothing else. It does not read rules, store or fetch
+policy, hold sessions, mint tokens, act on a decision, or perform any I/O. Consumers bring the
+rules, the content, and the enforcement; Kengen brings the decision lattice.
 
-## Use
+```rust
+use kengen::{Verdict, adjudicate};
 
-1. Create a new repository from this starter.
-2. Replace placeholder project metadata in `PROJECT.md`, `README.md`, and
-   `Cargo.toml`.
-3. Install or expose the OpenSpec CLI in your shell.
-4. Generate local agent shims for your editor or agent:
+// The consumer evaluated its own rules to these verdicts, with a deny-by-default stance:
+let decision = adjudicate([Verdict::Allow, Verdict::Ask, Verdict::Allow], Verdict::Deny);
+assert_eq!(decision, Verdict::Ask); // Ask escalates over Allow; nothing downgrades it
+```
 
-   ```bash
-   openspec init --tools codex
-   # or: openspec init --tools claude,cursor,github-copilot
-   ```
+## What Kengen owns — and what it does not
 
-5. Start the first project-specific change with OpenSpec:
+- **Owns**: the `Verdict` lattice and its combination (commutative, associative, idempotent; a
+  `Deny` always dominates, an `Ask` always escalates over `Allow`).
+- **Does not own**: which rules exist, what each rule decides, the default stance, where policy
+  lives, or what happens after a verdict. Those are the consumer's — forever.
 
-   ```bash
-   openspec new change "initial-project-shape"
-   ```
+## Architecture
 
-   This change should replace placeholders, choose the real crate layout, add
-   the first specs, and make the Rust Definition of Done runnable.
+- `PROJECT.md` — purpose, the invariants to protect, non-goals.
+- `AGENTS.md` — operating protocol, lineage, and the Definition of Done.
+- `BACKLOG.md` — the bet, the phased plan, and the dependency stance.
+- `docs/naming.md` — the naming worldview and its guard.
+- `openspec/specs/` — shipped requirements.
 
-## Included
+## Status (0.1.0, in development)
 
-- `AGENTS.md` - repository rules for AI coding agents and humans.
-- `PROJECT.md` - project-specific contract, terminology, and priorities.
-- `docs/development-flow.md` - short OpenSpec and commit checklist.
-- `docs/adr/` - architecture decision record skeleton.
-- `openspec/` - empty OpenSpec structure ready for specs and changes.
-- A Rust workspace policy anchor in `Cargo.toml`. It intentionally has no
-  crates until the first project-specific change chooses the real layout.
-
-Generated agent shims such as `.codex/` and `.claude/` are per-clone local
-files and should not be committed.
+Project shape only: the sans-I/O core exists; behaviour is built bet-first — see `BACKLOG.md`.
 
 ## License
 
