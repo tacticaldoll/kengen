@@ -15,11 +15,11 @@ use std::{
 
 use tianheng::prelude::*;
 
-const CONTRACT_REASON: &str = "kengen-contract is the adjudication core and a leaf of the discipline: it depends on nothing, so the verdict lattice pulls in no framework, runtime, or policy source.";
+const CONTRACT_REASON: &str = "kengen-contract is the adjudication core and a leaf of the discipline: it declares no normal dependency, so the verdict lattice pulls in no framework, runtime, or policy source.";
 const GOVERNANCE_REASON: &str = "the governance gate must stay independent of the workspace graph it judges: its normal dependencies are Tianheng's composed adopter surface alone, never an individual governance instrument or a workspace crate under judgment.";
-const FACADE_REASON: &str = "kengen is the curated published entrypoint: it may depend only on kengen-contract, never on a policy source, enforcement point, runtime, or external framework.";
-const CORE_PURITY_REASON: &str = "kengen-contract makes no inline `std::time` `now` call and exposes no async function: time and asynchronous driving belong to the consumer that composes it. Coverage is partial by nature (a clock read through a method on a value, such as `Instant::elapsed`, is invisible to a source scan), so this tooth complements review rather than replacing it.";
-const CORE_NO_IO_REASON: &str = "kengen-contract performs no I/O: no code in it may call into std::io/fs/net/process, because loading policy, storing it, and enforcing a verdict are the consumer's. Coverage is partial by nature (macro-expanded I/O such as println! is invisible to a source scan), so this tooth complements review rather than replacing it.";
+const FACADE_REASON: &str = "kengen is the curated published entrypoint: its normal dependencies are kengen-contract alone, never a policy source, enforcement point, runtime, or external framework.";
+const CORE_PURITY_REASON: &str = "kengen-contract's library makes no inline `std::time` `now` call and declares no public `async fn`: time and asynchronous driving belong to the consumer that composes it. Coverage is partial by nature (a clock read through a method on a value, such as `Instant::elapsed`, a `now` path taken as a value rather than called, and a public `fn` returning `impl Future` are invisible to a source scan), so this tooth complements review rather than replacing it.";
+const CORE_NO_IO_REASON: &str = "kengen-contract's library makes no inline call into std::io/fs/net/process, because loading policy, storing it, and enforcing a verdict are the consumer's. Coverage is partial by nature (macro-expanded I/O such as println!, a method called on an I/O value such as `write_all` on a `std::io::Write` parameter, and an I/O path taken as a value are invisible to a source scan), so this tooth complements review rather than replacing it.";
 const FACADE_REEXPORT_REASON: &str =
     "the kengen facade must stay a pure re-export entrypoint and hold no logic of its own";
 const FACADE_NON_REEXPORT: &str = "non-re-export item in facade library";

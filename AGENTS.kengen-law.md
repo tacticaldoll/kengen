@@ -10,7 +10,7 @@ Regenerate it with `BLESS=1 cargo test -p kengen-governance law_projection_is_fr
 
 ### `kengen-contract` (crate)
 
-> kengen-contract is the adjudication core and a leaf of the discipline: it depends on nothing, so the verdict lattice pulls in no framework, runtime, or policy source.
+> kengen-contract is the adjudication core and a leaf of the discipline: it declares no normal dependency, so the verdict lattice pulls in no framework, runtime, or policy source.
 
 - **rule**: restrict dependencies to (only: )
 - **kind**: crate · **severity**: enforce
@@ -24,42 +24,42 @@ Regenerate it with `BLESS=1 cargo test -p kengen-governance law_projection_is_fr
 
 ### `kengen` (crate)
 
-> kengen is the curated published entrypoint: it may depend only on kengen-contract, never on a policy source, enforcement point, runtime, or external framework.
+> kengen is the curated published entrypoint: its normal dependencies are kengen-contract alone, never a policy source, enforcement point, runtime, or external framework.
 
 - **rule**: restrict dependencies to (only: kengen-contract)
 - **kind**: crate · **severity**: enforce
 
 ### `kengen-contract::crate` (module)
 
-> kengen-contract makes no inline `std::time` `now` call and exposes no async function: time and asynchronous driving belong to the consumer that composes it. Coverage is partial by nature (a clock read through a method on a value, such as `Instant::elapsed`, is invisible to a source scan), so this tooth complements review rather than replacing it.
+> kengen-contract's library makes no inline `std::time` `now` call and declares no public `async fn`: time and asynchronous driving belong to the consumer that composes it. Coverage is partial by nature (a clock read through a method on a value, such as `Instant::elapsed`, a `now` path taken as a value rather than called, and a public `fn` returning `impl Future` are invisible to a source scan), so this tooth complements review rather than replacing it.
 
 - **rule**: inline symbol path confined to module (confined_prefix: std::time; ending_with: now)
 - **kind**: module · **severity**: enforce · **crate**: kengen-contract
 
 ### `kengen-contract::crate` (module)
 
-> kengen-contract performs no I/O: no code in it may call into std::io/fs/net/process, because loading policy, storing it, and enforcing a verdict are the consumer's. Coverage is partial by nature (macro-expanded I/O such as println! is invisible to a source scan), so this tooth complements review rather than replacing it.
+> kengen-contract's library makes no inline call into std::io/fs/net/process, because loading policy, storing it, and enforcing a verdict are the consumer's. Coverage is partial by nature (macro-expanded I/O such as println!, a method called on an I/O value such as `write_all` on a `std::io::Write` parameter, and an I/O path taken as a value are invisible to a source scan), so this tooth complements review rather than replacing it.
 
 - **rule**: inline symbol path confined to module (confined_prefix: std::io)
 - **kind**: module · **severity**: enforce · **crate**: kengen-contract
 
 ### `kengen-contract::crate` (module)
 
-> kengen-contract performs no I/O: no code in it may call into std::io/fs/net/process, because loading policy, storing it, and enforcing a verdict are the consumer's. Coverage is partial by nature (macro-expanded I/O such as println! is invisible to a source scan), so this tooth complements review rather than replacing it.
+> kengen-contract's library makes no inline call into std::io/fs/net/process, because loading policy, storing it, and enforcing a verdict are the consumer's. Coverage is partial by nature (macro-expanded I/O such as println!, a method called on an I/O value such as `write_all` on a `std::io::Write` parameter, and an I/O path taken as a value are invisible to a source scan), so this tooth complements review rather than replacing it.
 
 - **rule**: inline symbol path confined to module (confined_prefix: std::fs)
 - **kind**: module · **severity**: enforce · **crate**: kengen-contract
 
 ### `kengen-contract::crate` (module)
 
-> kengen-contract performs no I/O: no code in it may call into std::io/fs/net/process, because loading policy, storing it, and enforcing a verdict are the consumer's. Coverage is partial by nature (macro-expanded I/O such as println! is invisible to a source scan), so this tooth complements review rather than replacing it.
+> kengen-contract's library makes no inline call into std::io/fs/net/process, because loading policy, storing it, and enforcing a verdict are the consumer's. Coverage is partial by nature (macro-expanded I/O such as println!, a method called on an I/O value such as `write_all` on a `std::io::Write` parameter, and an I/O path taken as a value are invisible to a source scan), so this tooth complements review rather than replacing it.
 
 - **rule**: inline symbol path confined to module (confined_prefix: std::net)
 - **kind**: module · **severity**: enforce · **crate**: kengen-contract
 
 ### `kengen-contract::crate` (module)
 
-> kengen-contract performs no I/O: no code in it may call into std::io/fs/net/process, because loading policy, storing it, and enforcing a verdict are the consumer's. Coverage is partial by nature (macro-expanded I/O such as println! is invisible to a source scan), so this tooth complements review rather than replacing it.
+> kengen-contract's library makes no inline call into std::io/fs/net/process, because loading policy, storing it, and enforcing a verdict are the consumer's. Coverage is partial by nature (macro-expanded I/O such as println!, a method called on an I/O value such as `write_all` on a `std::io::Write` parameter, and an I/O path taken as a value are invisible to a source scan), so this tooth complements review rather than replacing it.
 
 - **rule**: inline symbol path confined to module (confined_prefix: std::process)
 - **kind**: module · **severity**: enforce · **crate**: kengen-contract
@@ -68,7 +68,7 @@ Regenerate it with `BLESS=1 cargo test -p kengen-governance law_projection_is_fr
 
 ### `kengen-contract::crate` (semantic)
 
-> kengen-contract makes no inline `std::time` `now` call and exposes no async function: time and asynchronous driving belong to the consumer that composes it. Coverage is partial by nature (a clock read through a method on a value, such as `Instant::elapsed`, is invisible to a source scan), so this tooth complements review rather than replacing it.
+> kengen-contract's library makes no inline `std::time` `now` call and declares no public `async fn`: time and asynchronous driving belong to the consumer that composes it. Coverage is partial by nature (a clock read through a method on a value, such as `Instant::elapsed`, a `now` path taken as a value rather than called, and a public `fn` returning `impl Future` are invisible to a source scan), so this tooth complements review rather than replacing it.
 
 - **rule**: must not expose async fn (including_submodules: true; scan_depth: subtree)
 - **kind**: semantic · **severity**: enforce · **crate**: kengen-contract
