@@ -56,7 +56,9 @@ other product, and which products it is composed with is the consumer's knowledg
 
 - **Executable governance as a `kengen-governance` crate** (was deferred): adopted when the
   repository was re-founded on the family template's brick skeleton. The gate holds dependency isolation
-  (`kengen-contract` depends on nothing; the facade only on the core; the gate only on Tianheng),
-  sans-I/O purity (no `std::io`/`fs`/`net`/`process` call, no ambient clock read, no exposed
-  `async fn` in the core), the facade's re-exports-only shape, and workspace coverage. The naming
-  worldview stays with `scripts/naming-guard.sh`, run in the Definition of Done and in CI.
+  over normal dependencies (`kengen-contract` declares none; the facade only the core; the gate
+  only Tianheng), sans-I/O purity as far as a source scan sees it (no inline
+  `std::io`/`fs`/`net`/`process` call, no inline `std::time` `now` call, no public `async fn` in
+  the core; what the scan cannot see stays review-governed), the facade's re-exports-only shape,
+  and workspace coverage. The naming worldview stays with `scripts/naming-guard.sh`, run in the
+  Definition of Done and in CI.

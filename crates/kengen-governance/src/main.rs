@@ -1,9 +1,12 @@
 //! Executable architectural governance for the kengen workspace.
 //!
-//! It enforces dependency boundaries, the core's sans-I/O purity (no I/O call, no inline clock
-//! read, no exposed `async fn`), the facade's re-exports-only shape, and workspace coverage. The
-//! axiom that the core never decides what a rule means has no syntactic marker: it stays
-//! review-governed.
+//! It enforces normal-dependency boundaries, the core's sans-I/O purity as far as a source scan
+//! sees it (no inline `std::io`/`fs`/`net`/`process` call, no inline `std::time` `now` call, no
+//! public `async fn`), the facade's re-exports-only shape, and workspace coverage. I/O, a clock
+//! read, or asynchrony the scan cannot see (macro-expanded I/O, a call through a method on a
+//! value, a public `fn` returning `impl Future`) stays review-governed, as the accepted boundary
+//! reasons state. The axiom that the core never decides what a rule means has no syntactic
+//! marker: it stays review-governed too.
 
 #![forbid(unsafe_code)]
 
