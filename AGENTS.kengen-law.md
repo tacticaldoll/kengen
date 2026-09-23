@@ -31,7 +31,7 @@ Regenerate it with `BLESS=1 cargo test -p kengen-governance law_projection_is_fr
 
 ### `kengen-contract::crate` (module)
 
-> kengen-contract's library makes no inline `std::time` `now` call and declares no public `async fn`: time and asynchronous driving belong to the consumer that composes it. Coverage is partial by nature (a clock read through a method on a value, such as `Instant::elapsed`, a `now` path taken as a value rather than called, and a public `fn` returning `impl Future` are invisible to a source scan), so this tooth complements review rather than replacing it.
+> kengen-contract's library makes no inline `std::time` `now` call and declares no public `async fn`: time and asynchronous driving belong to the consumer that composes it. Coverage is partial by nature (a clock read through a method on a value, such as `Instant::elapsed`, and a `now` path taken as a value rather than called are invisible to a source scan, and a public `fn` returning `impl Future` is not an async fn), so this tooth complements review rather than replacing it.
 
 - **rule**: inline symbol path confined to module (confined_prefix: std::time; ending_with: now)
 - **kind**: module · **severity**: enforce · **crate**: kengen-contract
@@ -68,7 +68,7 @@ Regenerate it with `BLESS=1 cargo test -p kengen-governance law_projection_is_fr
 
 ### `kengen-contract::crate` (semantic)
 
-> kengen-contract's library makes no inline `std::time` `now` call and declares no public `async fn`: time and asynchronous driving belong to the consumer that composes it. Coverage is partial by nature (a clock read through a method on a value, such as `Instant::elapsed`, a `now` path taken as a value rather than called, and a public `fn` returning `impl Future` are invisible to a source scan), so this tooth complements review rather than replacing it.
+> kengen-contract's library makes no inline `std::time` `now` call and declares no public `async fn`: time and asynchronous driving belong to the consumer that composes it. Coverage is partial by nature (a clock read through a method on a value, such as `Instant::elapsed`, and a `now` path taken as a value rather than called are invisible to a source scan, and a public `fn` returning `impl Future` is not an async fn), so this tooth complements review rather than replacing it.
 
 - **rule**: must not expose async fn (including_submodules: true; scan_depth: subtree)
 - **kind**: semantic · **severity**: enforce · **crate**: kengen-contract
