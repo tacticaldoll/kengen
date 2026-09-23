@@ -1,6 +1,10 @@
 [workspace]
 resolver = "2"
-members = ["crates/kengen"]
+members = [
+    "crates/kengen",
+    "crates/kengen-contract",
+    "crates/kengen-governance",
+]
 
 [workspace.package]
 version = "0.1.0"
@@ -10,3 +14,5 @@ license = "MIT OR Apache-2.0"
 repository = "https://github.com/tacticaldoll/kengen"
 
 [workspace.dependencies]
+kengen-contract = { path = "crates/kengen-contract", version = "0.1.0" }
+tianheng = "0.6.1"

@@ -12,10 +12,17 @@ rules, the content, and the enforcement; Kengen brings the decision lattice.
 ```rust
 use kengen::{Verdict, adjudicate};
 
-// The consumer evaluated its own rules to these verdicts, with a deny-by-default stance:
-let decision = adjudicate([Verdict::Allow, Verdict::Ask, Verdict::Allow], Verdict::Deny);
+// The consumer evaluated its own rules to these verdicts, with an allow-by-default stance:
+let decision = adjudicate([Verdict::Allow, Verdict::Ask, Verdict::Allow], Verdict::Allow);
 assert_eq!(decision, Verdict::Ask); // Ask escalates over Allow; nothing downgrades it
 ```
+
+## Scope
+
+Kengen owns the verdict-lattice combination mechanism and nothing else (see "What Kengen owns"
+below). It is built **bet-first**: behaviour grows only as a consumer forces it, so the surface
+stays deliberately minimal. The plan and deferrals live in `BACKLOG.md`; `CHANGELOG.md` records what
+each release adds.
 
 ## What Kengen owns — and what it does not
 
@@ -26,18 +33,20 @@ assert_eq!(decision, Verdict::Ask); // Ask escalates over Allow; nothing downgra
 
 ## Architecture
 
+- [`kengen-contract`](crates/kengen-contract) — the isolated core: the `Verdict` lattice,
+  `combine`, and `adjudicate`.
+- [`kengen`](crates/kengen) — the curated entrypoint you depend on; it re-exports the core.
+- [`kengen-governance`](crates/kengen-governance) — the unpublished Tianheng gate; its accepted
+  law is projected into `AGENTS.kengen-law.md`.
 - `PROJECT.md` — purpose, the invariants to protect, non-goals.
-- `AGENTS.md` — operating protocol, lineage, and the Definition of Done.
 - `BACKLOG.md` — the bet, the phased plan, and the dependency stance.
-- `docs/naming.md` — the naming worldview and its guard.
+- `docs/domain-language.md` — the naming worldview and its guard.
 - `openspec/specs/` — shipped requirements.
 
-## Scope
+## Contributing
 
-Kengen owns the verdict-lattice combination mechanism and nothing else (see "What Kengen owns"
-above). It is built **bet-first**: behaviour grows only as a consumer forces it, so the surface
-stays deliberately minimal. The plan and deferrals live in `BACKLOG.md`; `CHANGELOG.md` records what
-each release adds.
+`AGENTS.md` is the contributor and agent guide, including the Definition of Done;
+`docs/development-flow.md` is the short checklist.
 
 ## License
 

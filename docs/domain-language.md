@@ -1,4 +1,4 @@
-# Naming Worldview
+# Domain Language
 
 Kengen's vocabulary is governance: the words it allows itself to use fence what it is allowed to
 become. Kengen is a **sans-I/O adjudicator** — it *decides* (`Allow`/`Ask`/`Deny`), it never

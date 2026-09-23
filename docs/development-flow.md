@@ -10,22 +10,27 @@ contributor and agent guide; this file is a short checklist.
    - `openspec list`
    - read relevant files under `openspec/specs/`
 2. Propose the change:
-   - `openspec new change "<change-name>"`
+   - `openspec new change "<change>"`
    - write `proposal.md`, `design.md`, `tasks.md`, and delta specs
-   - commit as `docs(<change-name>): propose <summary>`
+   - commit as `docs(<change>): propose <summary>`
 3. Apply the change:
-   - implement against `openspec/changes/<change-name>/specs/`
-   - check off tasks only after code and tests pass
+   - implement against `openspec/changes/<change>/specs/`
+   - check off tasks only after the Definition of Done passes
    - commit coherent compiling milestones as `feat(...)` or `fix(...)`
 4. Sync verified semantics:
-   - promote verified delta specs into `openspec/specs/`
-   - **delete** the completed change directory (archive = deletion; there is no archive folder,
-     and `openspec archive` is not used — git history keeps the deliberation)
-   - commit as `docs(specs): sync <change-name>`
+   - promote verified delta specs into `openspec/specs/`, then `git rm -r` the completed change
+     directory — its content now lives in `openspec/specs/` and git history; there is no archive
+   - commit as `docs(specs): sync <change>`
+5. Open a pull request against `main` for the whole change. Branch commits can be as granular as
+   you like: the pull request is squash-merged, so its title and body are the durable record.
+
+Every change passes adversarial review at both the propose and apply phases before it is
+committed. See `AGENTS.md`'s Commit And Integration Governance for the pull request and
+squash-merge rules.
 
 ## Commit Granularity
 
-Apply commits should be larger than individual task checkboxes and smaller than an entire risky
+Branch commits should be larger than individual task checkboxes and smaller than an entire risky
 feature. Prefer one commit per coherent milestone that builds, tests, and preserves the spec
 contract.
 
@@ -37,5 +42,5 @@ Avoid:
 
 ## Definition Of Done
 
-See `AGENTS.md` for the authoritative gate list (build, test, clippy, fmt, doc, deny,
-naming-guard), run from the workspace root.
+`AGENTS.md` is the single source for the gate list — run its Definition of Done before checking
+off tasks or syncing specs. CI runs the same gates on push and pull request.

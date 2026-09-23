@@ -1,6 +1,6 @@
 # Project Contract
 
-## Purpose
+## Vision
 
 Kengen (権限) is a **sans-I/O access-policy adjudicator**. It answers one question, purely: given
 the verdicts a set of policy rules have reached about a request, what is the single decision —
@@ -11,14 +11,15 @@ else. It does not fetch a policy, evaluate a rule, hold a session, mint a token,
 decision. It is the small, reusable heart of "is this permitted?", left free of the I/O and the
 domain content that every consumer supplies differently.
 
-## Positioning: a mechanism, not a policy engine
+## Product Positioning
 
-Access control dies as a monolith when one component tries to own *both* the decision mechanism
-*and* the policy content *and* the enforcement. Kengen refuses that shape. It is a **bounded
-context**: the adjudication lattice. The rules, their meaning, where policy is stored, and what
-happens after a verdict are the consumer's — never Kengen's.
+A mechanism, not a policy engine. Access control dies as a monolith when one component tries to own
+*both* the decision mechanism *and* the policy content *and* the enforcement. Kengen refuses that
+shape. It is a **bounded context**: the adjudication lattice. The rules, their meaning, where policy
+is stored, and what happens after a verdict are the consumer's — never Kengen's.
 
-It is a **leaf of the discipline**: it depends on nothing and does no I/O; consumers compose it.
+It is a **leaf of the discipline**: it depends on no crate outside its own workspace and does no
+I/O; consumers compose it.
 
 ## Core Contract
 
@@ -56,6 +57,8 @@ lattice.
 ## References
 
 - Operating protocol and Definition of Done: `AGENTS.md`
-- Naming worldview (native register, banned enforcement/runtime vocabulary): `docs/naming.md`
+- Accepted architecture law, generated: `AGENTS.kengen-law.md`
+- Naming worldview (native register, banned enforcement/runtime vocabulary):
+  `docs/domain-language.md`
 - The bet, phased plan, and dependency stance: `BACKLOG.md`
 - Shipped requirements: `openspec/specs/`

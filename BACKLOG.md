@@ -5,10 +5,11 @@ Shipped truth lives in `openspec/specs/`; active proposed truth in `openspec/cha
 
 ## Current Baseline
 
-Project shape established: the sans-I/O core (`crates/kengen`) with the `Verdict` lattice
-(`Allow`/`Ask`/`Deny`), `combine`, and `adjudicate`; the governance surface (`PROJECT.md`,
-`AGENTS.md`, naming worldview + guard, `deny.toml`, DoD); and OpenSpec scaffolding. Behaviour is
-built bet-first (below).
+Project shape established: the sans-I/O core (`crates/kengen-contract`) with the `Verdict`
+lattice (`Allow`/`Ask`/`Deny`), `combine`, and `adjudicate`, re-exported by the `kengen` facade;
+the governance surface (`PROJECT.md`, `AGENTS.md`, naming worldview + guard, `deny.toml`, DoD);
+the `kengen-governance` Tianheng gate; and OpenSpec scaffolding. Nothing is released yet.
+Behaviour is built bet-first (below).
 
 ## The Bet (gates everything)
 
@@ -27,9 +28,9 @@ Only after the bet holds do the phases below get built.
 
 ## Family dependency stance
 
-Kengen depends on **nothing** — it is a pure leaf of the discipline. Consumers compose it; nothing
-composes into its core. This repo is **sibling-blind**: it names no other product, and which
-products it is composed with is the consumer's knowledge, not Kengen's.
+Kengen depends on **nothing** outside its own workspace — it is a pure leaf of the discipline.
+Consumers compose it; nothing composes into its core. This repo is **sibling-blind**: it names no
+other product, and which products it is composed with is the consumer's knowledge, not Kengen's.
 
 ## Phased plan (after the bet)
 
@@ -51,13 +52,11 @@ products it is composed with is the consumer's knowledge, not Kengen's.
 - **Explanation shape**: attach provenance to the `Verdict` vs. return a separate structure.
   Deferred to the phase-1 consumer that forces it.
 
-## Deferred decisions
+## Settled decisions
 
-- **Executable governance as a `kengen-governance` crate**: the family ships architecture as an
-  executable Tianheng/guibiao `*-governance` crate (see `suunta-governance`, `shaahid-governance`).
-  Kengen currently enforces its one architectural axiom — the naming worldview — through
-  `scripts/naming-guard.sh` (run in the Definition of Done and in CI). Promoting that to a
-  `kengen-governance` crate that reacts against the source (dependency-isolation, sans-I/O purity,
-  no exposed `async fn`, active-prose boundaries) is **deferred** until the behaviour built
-  bet-first gives it invariants worth reacting against; the naming guard is sufficient for the
-  project-shape phase.
+- **Executable governance as a `kengen-governance` crate** (was deferred): adopted when the
+  repository was re-founded on the family template's brick skeleton. The gate holds dependency isolation
+  (`kengen-contract` depends on nothing; the facade only on the core; the gate only on Tianheng),
+  sans-I/O purity (no `std::io`/`fs`/`net`/`process` call, no ambient clock read, no exposed
+  `async fn` in the core), the facade's re-exports-only shape, and workspace coverage. The naming
+  worldview stays with `scripts/naming-guard.sh`, run in the Definition of Done and in CI.
