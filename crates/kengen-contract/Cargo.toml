@@ -1,6 +1,6 @@
 [package]
-name = "kengen"
-description = "Sans-I/O access-policy adjudication: combine per-rule verdicts into one Allow / Ask / Deny decision."
+name = "kengen-contract"
+description = "The isolated core contract for Kengen: sans-I/O access-policy adjudication."
 version.workspace = true
 edition.workspace = true
 rust-version.workspace = true
@@ -12,4 +12,3 @@ categories = ["rust-patterns"]
 publish = true
 
 [dependencies]
-kengen-contract.workspace = true
