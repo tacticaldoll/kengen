@@ -15,4 +15,4 @@ repository = "https://github.com/tacticaldoll/kengen"
 
 [workspace.dependencies]
 kengen-contract = { path = "crates/kengen-contract", version = "0.1.0" }
-tianheng = "0.6.1"
+tianheng = "0.7.0"
